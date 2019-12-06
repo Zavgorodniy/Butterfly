@@ -25,24 +25,29 @@ class ListFragment : BaseListFragment<ListViewModel, ListItem>(),
 
     private var testCallback: ListCallback? = null
 
+    private var failedRequest: Boolean = false
+
     private val butterflyDataObserver = Observer<List<ListItem>> {
         onDataLoaded(it.toMutableList().apply {
             add(0, TitleItemModel(title = appString(R.string.butterfly)))
         })
+        failedRequest = false
     }
 
     private val catDataObserver = Observer<List<ListItem>> {
         onDataLoaded(it.toMutableList().apply {
             add(0, TitleItemModel(title = appString(R.string.cat)))
         })
+        failedRequest = false
     }
 
     private val errorListObserver = Observer<Any> {
         hideLoadingProgress()
+        failedRequest = true
     }
 
     private val connectionObserver = Observer<Boolean> {
-        if (it) {
+        if (it && failedRequest) {
             loadInitial()
         } else {
             hideProgress()
