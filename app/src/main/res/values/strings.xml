@@ -14,12 +14,12 @@
     <string name="no">No</string>
 
     <!--list screen-->
-    <string name="test">Test</string>
     <string name="content">Test</string>
     <string name="no_results">No results</string>
     <string name="publisher">Publisher:</string>
     <string name="cat">Cat</string>
     <string name="butterfly">Butterfly</string>
     <string name="user">User:</string>
+    <string name="fact">Fact:</string>
 
 </resources>

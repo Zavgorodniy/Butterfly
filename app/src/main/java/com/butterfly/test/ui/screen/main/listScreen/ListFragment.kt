@@ -3,14 +3,18 @@ package com.butterfly.test.ui.screen.main.listScreen
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.butterfly.test.R
+import com.butterfly.test.extensions.appDrawable
 import com.butterfly.test.extensions.appString
 import com.butterfly.test.extensions.bindInterfaceOrThrow
 import com.butterfly.test.models.ListItem
 import com.butterfly.test.models.TitleItemModel
 import com.butterfly.test.ui.base.list.BaseListFragment
+import kotlinx.android.synthetic.main.fragment_list.*
 
 class ListFragment : BaseListFragment<ListViewModel, ListItem>(),
     ListAdapterCallback {
@@ -61,7 +65,7 @@ class ListFragment : BaseListFragment<ListViewModel, ListItem>(),
             ListAdapter(it, this)
         }.apply { adapter = this }
 
-    override fun getScreenTitle(): Int = R.string.test
+    override fun getScreenTitle(): Int = R.string.content
 
     override fun hasToolbar(): Boolean = true
 
@@ -97,7 +101,11 @@ class ListFragment : BaseListFragment<ListViewModel, ListItem>(),
         return super.onBackPressed()
     }
 
-    private fun setupUi() = Unit
+    private fun setupUi() {
+        rvRequest.addItemDecoration(DividerItemDecoration(context, LinearLayout.VERTICAL).apply {
+            appDrawable(R.drawable.item_divider)?.let { setDrawable(it) }
+        })
+    }
 
     override fun loadInitial() {
         showLoadingProgress()
