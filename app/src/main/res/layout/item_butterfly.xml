@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_default"
+    android:layout_marginEnd="@dimen/margin_default"
+    android:layout_marginBottom="@dimen/margin_default">
+
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_default_quarter"
+        android:text="@string/butterfly"
+        android:textSize="@dimen/medium_text"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ivMain"
+        android:layout_width="@dimen/item_img_size"
+        android:layout_height="@dimen/item_img_size"
+        android:layout_below="@+id/tvType"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_im_placeholder" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvType"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_toEndOf="@+id/ivMain"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textStyle="bold"
+            tools:text="Madama Butterfly" />
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default_quarter"
+            android:ellipsize="end"
+            android:maxLines="2"
+            tools:text="Torque, Head Loss, and Cavitation Analysis (M49)d" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default_quarter"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_default_half"
+                android:text="@string/publisher"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPublisher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                tools:text="Publisher Publisher" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
