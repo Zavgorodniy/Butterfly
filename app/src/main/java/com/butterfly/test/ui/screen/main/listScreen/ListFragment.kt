@@ -6,10 +6,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.butterfly.test.R
+import com.butterfly.test.extensions.appString
 import com.butterfly.test.extensions.bindInterfaceOrThrow
-import com.butterfly.test.models.Butterfly
-import com.butterfly.test.models.Cat
 import com.butterfly.test.models.ListItem
+import com.butterfly.test.models.TitleItemModel
 import com.butterfly.test.ui.base.list.BaseListFragment
 
 class ListFragment : BaseListFragment<ListViewModel, ListItem>(),
@@ -25,12 +25,16 @@ class ListFragment : BaseListFragment<ListViewModel, ListItem>(),
 
     private var testCallback: ListCallback? = null
 
-    private val butterflyDataObserver = Observer<List<Butterfly>> {
-        onDataLoaded(it)
+    private val butterflyDataObserver = Observer<List<ListItem>> {
+        onDataLoaded(it.toMutableList().apply {
+            add(0, TitleItemModel(title = appString(R.string.butterfly)))
+        })
     }
 
-    private val catDataObserver = Observer<List<Cat>> {
-        onDataLoaded(it)
+    private val catDataObserver = Observer<List<ListItem>> {
+        onDataLoaded(it.toMutableList().apply {
+            add(0, TitleItemModel(title = appString(R.string.cat)))
+        })
     }
 
     private val errorListObserver = Observer<Any> {

@@ -2,7 +2,8 @@ package com.butterfly.test
 
 enum class ItemType {
     BUTTERFLY,
-    CAT;
+    CAT,
+    TITLE;
 
     operator fun invoke() = ordinal
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.butterfly.test.ItemType.BUTTERFLY
+import com.butterfly.test.ItemType.CAT
 import com.butterfly.test.R
 import com.butterfly.test.extensions.appString
 import com.butterfly.test.extensions.find
@@ -32,7 +33,8 @@ class ListAdapter(context: Context, callback: ListAdapterCallback) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ListItem> =
         when (viewType) {
             BUTTERFLY() -> ButterflyVH.newInstance(inflater, parent, weakRefCallback)
-            else -> CatVH.newInstance(inflater, parent, weakRefCallback)
+            CAT() -> CatVH.newInstance(inflater, parent, weakRefCallback)
+            else -> TitleVH.newInstance(inflater, parent)
         }
 
     override fun onBindViewHolder(holder: BaseViewHolder<ListItem>, position: Int) {
@@ -102,6 +104,18 @@ class ListAdapter(context: Context, callback: ListAdapterCallback) :
                     }
                 }
             }
+        }
+    }
+
+    class TitleVH(itemView: View) : BaseViewHolder<ListItem>(itemView) {
+
+        companion object {
+            internal fun newInstance(inflater: LayoutInflater, parent: ViewGroup?) =
+                TitleVH(inflater.inflate(R.layout.item_category_title, parent, false))
+        }
+
+        override fun bind(item: ListItem, position: Int) {
+            item.title?.let { (itemView as? TextView)?.text = it }
         }
     }
 }
