@@ -4,19 +4,30 @@
     android:id="@+id/rlItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin_default"
-    android:layout_marginEnd="@dimen/margin_default"
-    android:layout_marginBottom="@dimen/margin_default"
+    android:layout_margin="@dimen/margin_default"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvSubtitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_default_quarter"
-        android:ellipsize="end"
-        android:maxLines="2"
-        tools:text="Torque, Head Loss, and Cavitation Analysis (M49)d" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_default_half"
+            android:text="@string/fact"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
+            tools:text="Torque, Head Loss, and Cavitation Analysis (M49)dsdsss " />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
