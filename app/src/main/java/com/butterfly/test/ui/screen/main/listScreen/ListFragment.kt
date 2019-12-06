@@ -10,9 +10,9 @@ import com.butterfly.test.extensions.bindInterfaceOrThrow
 import com.butterfly.test.models.Butterfly
 import com.butterfly.test.models.Cat
 import com.butterfly.test.models.ListItem
-import com.butterfly.test.ui.base.list.BaseSortedListFragment
+import com.butterfly.test.ui.base.list.BaseListFragment
 
-class ListFragment : BaseSortedListFragment<ListViewModel, ListItem>(),
+class ListFragment : BaseListFragment<ListViewModel, ListItem>(),
     ListAdapterCallback {
 
     companion object {

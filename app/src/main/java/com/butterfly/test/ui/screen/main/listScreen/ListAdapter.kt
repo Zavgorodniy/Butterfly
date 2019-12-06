@@ -13,7 +13,7 @@ import com.butterfly.test.extensions.find
 import com.butterfly.test.extensions.hideIfEmpty
 import com.butterfly.test.extensions.loadImageWithoutCrop
 import com.butterfly.test.models.ListItem
-import com.butterfly.test.ui.base.list.BaseSortedRecyclerViewAdapter
+import com.butterfly.test.ui.base.list.BaseRecyclerViewAdapter
 import com.butterfly.test.ui.base.list.BaseViewHolder
 import java.lang.ref.WeakReference
 
@@ -23,10 +23,7 @@ interface ListAdapterCallback {
 }
 
 class ListAdapter(context: Context, callback: ListAdapterCallback) :
-    BaseSortedRecyclerViewAdapter<ListItem, BaseViewHolder<ListItem>>(
-        context,
-        classType = ListItem::class.java
-    ) {
+    BaseRecyclerViewAdapter<ListItem, BaseViewHolder<ListItem>>(context) {
 
     private val weakRefCallback = WeakReference(callback)
 

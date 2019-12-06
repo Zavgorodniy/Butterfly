@@ -11,8 +11,12 @@ import com.butterfly.test.VISIBLE_TRESHOLD
 import com.butterfly.test.extensions.setVisibility
 import com.butterfly.test.ui.base.BaseFragment
 import com.butterfly.test.ui.base.BaseViewModel
+import com.butterfly.test.ui.base.NO_ID_INT
 
-abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
+/**
+ * Base fragment for the implementation of the screen with a list of data.
+ */
+abstract class BaseListFragment<ViewModel : BaseViewModel, M : Any> :
     BaseFragment<ViewModel>(),
     SwipeRefreshLayout.OnRefreshListener,
     EndlessScrollListener.OnLoadMoreListener,
@@ -24,6 +28,9 @@ abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
 
     protected open val refreshLayoutId = R.id.srRequest
 
+    /**
+     * Set page limit for pagination.
+     */
     protected open var pageLimit = PAGE_LIMIT
 
     protected open var visibleThreshold = VISIBLE_TRESHOLD
@@ -34,13 +41,13 @@ abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
 
     private var refreshLayout: SwipeRefreshLayout? = null
 
-    private var rvList: RecyclerView? = null
+    private lateinit var rvList: RecyclerView
 
     /**
-     * Get an adapter that extends [BaseSortedRecyclerViewAdapter].
-     * @return an instance of [BaseSortedRecyclerViewAdapter].
+     * Get an adapter that extends [BaseRecyclerViewAdapter].
+     * @return an instance of [BaseRecyclerViewAdapter].
      */
-    protected abstract fun getAdapter(): BaseSortedRecyclerViewAdapter<M, *>?
+    protected abstract fun getAdapter(): BaseRecyclerViewAdapter<M, *>?
 
     /**
      * This method is called to load the initial data.
@@ -52,7 +59,7 @@ abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
      */
     protected abstract fun loadMoreData()
 
-    protected open fun getLayoutManager() =
+    protected open fun getLayoutManager(): RecyclerView.LayoutManager =
         LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
     protected open fun getScrollDirection() =
@@ -60,10 +67,11 @@ abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vNoResults = view.findViewById(noResultViewId)
-        refreshLayout = view.findViewById(refreshLayoutId)
+        vNoResults = if (noResultViewId != NO_ID_INT) view.findViewById(noResultViewId) else null
+        refreshLayout =
+            if (refreshLayoutId != NO_ID_INT) view.findViewById(refreshLayoutId) else null
         refreshLayout?.apply {
-            setOnRefreshListener(this@BaseSortedListFragment)
+            setOnRefreshListener(this@BaseListFragment)
         }
         initList(view)
     }
@@ -74,55 +82,6 @@ abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
 
     override fun loadMore() {
         loadMoreData()
-    }
-
-    fun invalidateNoResults() {
-        checkNoResults()
-    }
-
-    override fun onPaginationError() {
-        refreshLayout?.isRefreshing = false
-        endlessScrollListener?.updateNeedToLoad(true)
-    }
-
-    protected fun onDataLoaded(newData: List<M>, needToAddToAdapter: Boolean = true) {
-        if (getAdapter()?.isEmpty() == false) {
-            onDataRangeLoaded(newData, needToAddToAdapter)
-        } else {
-            onInitialDataLoaded(newData, needToAddToAdapter)
-        }
-        hideLoadingProgress()
-    }
-
-    /**
-     * Set the initial data.
-     */
-    protected fun onInitialDataLoaded(newData: List<M>, needToAddToAdapter: Boolean = true) {
-        refreshLayout?.isRefreshing = false
-        endlessScrollListener?.reset()
-        checkEndlessScroll(newData)
-        if (needToAddToAdapter) {
-            getAdapter()?.apply {
-                clear()
-                addAll(newData)
-                notifyDataSetChanged()
-            }
-        }
-        checkNoResults()
-    }
-
-    /**
-     * Set the range data.
-     */
-    protected fun onDataRangeLoaded(newData: List<M>, needToAddToAdapter: Boolean = true) {
-        checkEndlessScroll(newData)
-        if (needToAddToAdapter) {
-            getAdapter()?.apply {
-                addAll(newData)
-                if (newData.isNotEmpty()) notifyItemRangeInserted(itemCount, newData.size)
-            }
-        }
-        endlessScrollListener?.updateNeedToLoad(true)
     }
 
     /**
@@ -137,6 +96,51 @@ abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
      */
     protected open fun hideLoadingProgress() {
         refreshLayout?.isRefreshing = false
+    }
+
+    override fun onPaginationError() {
+        hideLoadingProgress()
+        endlessScrollListener?.updateNeedToLoad(true)
+    }
+
+    protected fun onDataLoaded(newData: List<M>) {
+        if (getAdapter()?.isEmpty() == false) {
+            onDataRangeLoaded(newData)
+        } else {
+            onInitialDataLoaded(newData)
+        }
+        hideLoadingProgress()
+    }
+
+    /**
+     * Set the initial data.
+     */
+    protected open fun onInitialDataLoaded(newData: List<M>) {
+        hideLoadingProgress()
+        endlessScrollListener?.reset()
+        checkEndlessScroll(newData)
+        getAdapter()?.apply {
+            clear()
+            addAll(newData)
+            notifyDataSetChanged()
+        }
+        checkNoResults()
+    }
+
+    protected open fun invalidateNoResults() {
+        checkNoResults()
+    }
+
+    /**
+     * Set the range data.
+     */
+    protected open fun onDataRangeLoaded(newData: List<M>) {
+        checkEndlessScroll(newData)
+        getAdapter()?.apply {
+            addAll(newData)
+            if (newData.isNotEmpty()) notifyItemRangeInserted(itemCount, newData.size)
+        }
+        endlessScrollListener?.updateNeedToLoad(true)
     }
 
     /**
@@ -167,16 +171,15 @@ abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
 
     private fun initList(view: View) {
         rvList = view.findViewById(recyclerViewId)
-        rvList?.apply {
-            adapter = this@BaseSortedListFragment.getAdapter()
+        with(rvList) {
+            adapter = this@BaseListFragment.getAdapter()
             setHasFixedSize(false)
-            layoutManager = this@BaseSortedListFragment.getLayoutManager()
-            endlessScrollListener =
-                EndlessScrollListener.create(
-                    this,
-                    visibleThreshold,
-                    getScrollDirection()
-                )
+            layoutManager = this@BaseListFragment.getLayoutManager()
+            endlessScrollListener = EndlessScrollListener.create(
+                this,
+                visibleThreshold,
+                getScrollDirection()
+            )
         }
     }
 
