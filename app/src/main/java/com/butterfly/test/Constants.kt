@@ -7,4 +7,4 @@ const val WHITE_SPACE = " "
 
 const val PAGE_LIMIT = 30
 
-const val VISIBLE_TRESHOLD = 10
+const val VISIBLE_THRESHOLD = 10

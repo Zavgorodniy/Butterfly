@@ -23,15 +23,6 @@ interface Converter<IN, OUT> {
     fun inToOut(@Nullable inObject: IN?): OUT?
 
     /**
-     * Convert OUT to IN
-     *
-     * @param outObject [OUT] object ot outToIn
-     * @return Nullable [IN] Converted object
-     */
-    @Nullable
-    fun outToIn(@Nullable outObject: OUT?): IN?
-
-    /**
      * Convert List of IN to List of OUT
      *
      * @param inObjects [List] of [IN] objects to listInToOut
@@ -39,13 +30,4 @@ interface Converter<IN, OUT> {
      */
     @Nullable
     fun listInToOut(@Nullable inObjects: List<IN>?): List<OUT>
-
-    /**
-     * Convert List of OUT to List of IN
-     *
-     * @param outObjects [List] of [OUT] objects to listOutToIn
-     * @return [List] of converted objects
-     */
-    @Nullable
-    fun listOutToIn(@Nullable outObjects: List<OUT>?): List<IN>
 }

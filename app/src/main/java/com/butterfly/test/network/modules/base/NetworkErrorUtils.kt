@@ -11,7 +11,6 @@ import com.butterfly.test.utils.printLogE
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import io.reactivex.SingleTransformer
 import io.reactivex.functions.Function
 import retrofit2.HttpException
 import retrofit2.Response
@@ -31,24 +30,8 @@ object NetworkErrorUtils {
 
     private const val UNPROCESSABLE_ENTITY = 422
 
-    private val TAG = NetworkErrorUtils::class.java.simpleName
-
-    fun <T> rxParseFlowableError() = Function<Throwable, Flowable<T>> {
-        Flowable.error<T>(parseError(it))
-    }
-
-    fun rxParseCompletableError() = Function<Throwable, Completable> {
-        Completable.error(parseError(it))
-    }
-
     fun <T> rxParseSingleError() = Function<Throwable, Single<T>> {
         Single.error<T>(parseError(it))
-    }
-
-    fun <T : Response<*>> rxParseError() = SingleTransformer<T, T> { inObservable ->
-        inObservable.doOnSuccess {
-            if (!it.isSuccessful) throw parseErrorResponseBody(it)
-        }
     }
 
     private fun parseError(throwable: Throwable): Throwable? =

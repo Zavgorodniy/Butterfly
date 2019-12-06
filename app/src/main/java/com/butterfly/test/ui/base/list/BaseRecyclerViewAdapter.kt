@@ -2,7 +2,6 @@ package com.butterfly.test.ui.base.list
 
 import android.content.Context
 import android.view.LayoutInflater
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -69,34 +68,11 @@ abstract class BaseRecyclerViewAdapter<TData,
     operator fun set(position: Int, item: TData): TData = data.set(position, item)
 
     /**
-     * Removes an element at the specified [item] from the list.
-     */
-    fun remove(item: TData) = data.remove(item)
-
-    /**
      * Removes an element at the specified [position] from the list.
      *
      * @return the element that has been removed.
      */
     fun remove(position: Int): TData = data.removeAt(position)
-
-    /**
-     * Update the items in the list using the [newItems] list and [DiffUtil.Callback].
-     */
-    fun updateListItems(newItems: List<TData>, callback: DiffUtil.Callback) {
-        DiffUtil.calculateDiff(callback).dispatchUpdatesTo(this)
-        data.clear()
-        data.addAll(newItems)
-    }
-
-    /**
-     * Update the items in the list using the [newItems] list.
-     */
-    fun updateAllNotify(newItems: List<TData>) {
-        clear()
-        addAll(newItems)
-        notifyDataSetChanged()
-    }
 
     /**
      * Removes all elements from this list.
@@ -111,25 +87,4 @@ abstract class BaseRecyclerViewAdapter<TData,
      * @return `true` if the list was changed as the result of the operation.
      */
     fun addAll(collection: Collection<TData>) = data.addAll(collection)
-
-    /**
-     * Returns the index of the first occurrence of the specified element in the list, or -1 if the specified
-     * element is not contained in the list.
-     */
-    fun getItemPosition(item: TData) = data.indexOf(item)
-
-    /**
-     * Inserts an element into the list at the specified [position].
-     */
-    fun insert(item: TData, position: Int) {
-        data.add(position, item)
-    }
-
-    /**
-     * Inserts all of the elements in the specified collection [items] into this list at the specified [position].
-     *
-     * @return `true` if the list was changed as the result of the operation.
-     */
-    fun insertAll(items: Collection<TData>, position: Int) =
-        data.addAll(position, items)
 }

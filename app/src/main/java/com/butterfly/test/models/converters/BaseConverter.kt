@@ -23,15 +23,6 @@ abstract class BaseConverter<IN : Any, OUT : Any> : Converter<IN, OUT> {
     override fun inToOut(@Nullable inObject: IN?): OUT? = processConvertInToOut(inObject)
 
     /**
-     * Convert OUT to IN
-     *
-     * @param outObject [OUT] object ot outToIn
-     * @return Nullable [IN] Converted object
-     */
-    @Nullable
-    override fun outToIn(@Nullable outObject: OUT?): IN? = processConvertOutToIn(outObject)
-
-    /**
      * Convert List of IN to List of OUT
      *
      * @param inObjects [List] of [IN] objects to listInToOut
@@ -42,18 +33,6 @@ abstract class BaseConverter<IN : Any, OUT : Any> : Converter<IN, OUT> {
         inObjects?.mapNotNull { inToOut(it) }
             ?: listOf()
 
-    /**
-     * Convert List of OUT to List of IN
-     *
-     * @param outObjects [List] of [OUT] objects to listOutToIn
-     * @return [List] of converted objects
-     */
-    @Nullable
-    override fun listOutToIn(@Nullable outObjects: List<OUT>?): List<IN> =
-        outObjects?.mapNotNull { outToIn(it) }
-            ?: listOf()
-
     protected abstract fun processConvertInToOut(@Nullable inObject: IN?): OUT?
 
-    protected abstract fun processConvertOutToIn(@Nullable outObject: OUT?): IN?
 }

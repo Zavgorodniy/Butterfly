@@ -41,7 +41,7 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(),
      */
     protected abstract val layoutId: Int
 
-    protected var toolbar: Toolbar? = null
+    private var toolbar: Toolbar? = null
 
     var baseView: BaseView? = null
         private set
@@ -168,7 +168,7 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(),
     /**
      * Initialize toolbar
      */
-    protected fun initToolbar() {
+    protected open fun initToolbar() {
         view?.apply {
             if (hasToolbar() && getToolbarId() != NO_TOOLBAR) {
                 toolbar = findViewById(getToolbarId())
@@ -207,7 +207,7 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(),
      *
      * @param actionBar Modified action bar
      */
-    protected fun setupActionBar(actionBar: ActionBar) {
+    protected open fun setupActionBar(actionBar: ActionBar) {
         actionBar.apply {
             title = getStringScreenTitle()
             setDisplayHomeAsUpEnabled(needToShowBackNav())

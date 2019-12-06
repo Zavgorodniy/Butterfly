@@ -20,7 +20,6 @@ android {
         all {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "PREF_NAME", '"test_prefs.xml"'
             buildConfigField "String", "ENDPOINT_BUTTERFLY", '"https://www.googleapis.com/books/"'
             buildConfigField "String", "ENDPOINT_CAT", '"https://cat-fact.herokuapp.com/"'
         }

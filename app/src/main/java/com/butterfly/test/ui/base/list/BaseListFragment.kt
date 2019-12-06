@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.butterfly.test.PAGE_LIMIT
 import com.butterfly.test.R
-import com.butterfly.test.VISIBLE_TRESHOLD
+import com.butterfly.test.VISIBLE_THRESHOLD
 import com.butterfly.test.extensions.setVisibility
 import com.butterfly.test.ui.base.BaseFragment
 import com.butterfly.test.ui.base.BaseViewModel
@@ -33,7 +33,7 @@ abstract class BaseListFragment<ViewModel : BaseViewModel, M : Any> :
      */
     protected open var pageLimit = PAGE_LIMIT
 
-    protected open var visibleThreshold = VISIBLE_TRESHOLD
+    protected open var visibleThreshold = VISIBLE_THRESHOLD
 
     protected var vNoResults: View? = null
 

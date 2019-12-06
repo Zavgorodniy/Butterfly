@@ -12,15 +12,7 @@ class SingleConverter<IN, OUT>(converter: Converter<IN, OUT>) {
         inObj.map { converterWR.get()?.inToOut(it) }
     }
 
-    fun outToIn(): SingleTransformer<OUT, IN> = SingleTransformer { outObj ->
-        outObj.map { converterWR.get()?.outToIn(it) }
-    }
-
     fun listInToOut(): SingleTransformer<List<IN>, List<OUT>> = SingleTransformer { inObj ->
         inObj.map { converterWR.get()?.listInToOut(it) }
-    }
-
-    fun listOutToIn(): SingleTransformer<List<OUT>, List<IN>> = SingleTransformer { outObj ->
-        outObj.map { converterWR.get()?.listOutToIn(it) }
     }
 }
