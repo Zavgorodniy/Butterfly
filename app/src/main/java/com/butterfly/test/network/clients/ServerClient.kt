@@ -25,41 +25,41 @@ class ServerClient(endpoint: String) {
     }
 
     val retrofit: Retrofit = Retrofit.Builder()
-            .addConverterFactory(NullOnEmptyConverterFactory())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(JacksonConverterFactory.create(mapper))
-            .baseUrl(endpoint)
-            .client(createHttpClient())
-            .build()
+        .addConverterFactory(NullOnEmptyConverterFactory())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .addConverterFactory(JacksonConverterFactory.create(mapper))
+        .baseUrl(endpoint)
+        .client(createHttpClient())
+        .build()
 
     private fun log() = LoggingInterceptor.Builder()
-            .loggable(BuildConfig.DEBUG)
-            .setLevel(Level.BASIC)
-            .log(Platform.INFO)
-            .request("Request>>>>")
-            .response("Response<<<<")
-            .build()
+        .loggable(BuildConfig.DEBUG)
+        .setLevel(Level.BASIC)
+        .log(Platform.INFO)
+        .request("Request>>>>")
+        .response("Response<<<<")
+        .build()
 
     private fun createHttpClient(): OkHttpClient = OkHttpClient.Builder()
-            .connectTimeout(SERVER_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
-            .readTimeout(SERVER_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
-            .writeTimeout(SERVER_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
-            .addInterceptor(object : Interceptor {
-                override fun intercept(chain: Interceptor.Chain): Response {
-                    val original = chain.request()
-                    val requestBuilder = original.newBuilder()
-                    requestBuilder.method(original.method, original.body)
-                    return chain.proceed(addHeader(requestBuilder))
-                }
-            })
-            .apply {
-                if (BuildConfig.DEBUG) {
-                    addInterceptor(log())
-                    addInterceptor(OkHttpProfilerInterceptor())
-                }
-            }.build()
+        .connectTimeout(SERVER_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+        .readTimeout(SERVER_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+        .writeTimeout(SERVER_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+        .addInterceptor(object : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                val original = chain.request()
+                val requestBuilder = original.newBuilder()
+                requestBuilder.method(original.method, original.body)
+                return chain.proceed(addHeader(requestBuilder))
+            }
+        })
+        .apply {
+            if (BuildConfig.DEBUG) {
+                addInterceptor(log())
+                addInterceptor(OkHttpProfilerInterceptor())
+            }
+        }.build()
 
     private fun addHeader(requestBuilder: Request.Builder): Request = requestBuilder
-            .removeHeader(HEADER_AUTHORIZATION)
-            .build()
+        .removeHeader(HEADER_AUTHORIZATION)
+        .build()
 }

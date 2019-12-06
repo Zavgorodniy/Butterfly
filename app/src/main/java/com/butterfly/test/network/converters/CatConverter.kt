@@ -6,7 +6,6 @@ import com.butterfly.test.models.CatModel
 import com.butterfly.test.models.converters.BaseInConverter
 import com.butterfly.test.network.bean.cat.CatBean
 import com.butterfly.test.network.bean.cat.CatUserNameBean
-import java.lang.StringBuilder
 
 interface CatConverter
 

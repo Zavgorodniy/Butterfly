@@ -11,6 +11,13 @@ class ButterflyConverterImpl : BaseInConverter<ButterflyBean, Butterfly>(), Butt
 
     override fun processConvertInToOut(inObject: ButterflyBean?): Butterfly? =
         inObject?.volumeInfo?.run {
-            ButterflyModel(inObject.id, title, subtitle, publisher, description, imageLinks?.smallThumbnail)
+            ButterflyModel(
+                inObject.id,
+                title,
+                subtitle,
+                publisher,
+                description,
+                imageLinks?.smallThumbnail
+            )
         }
 }

@@ -1,8 +1,8 @@
 package com.butterfly.test.ui.screen.main
 
-import android.os.Bundle
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import com.butterfly.test.R
 import com.butterfly.test.ui.base.BaseActivity
 import com.butterfly.test.ui.screen.main.listScreen.ListCallback

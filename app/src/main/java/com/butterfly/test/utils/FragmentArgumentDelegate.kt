@@ -14,15 +14,17 @@ class FragmentArgumentDelegate<T : Any> : ReadWriteProperty<Fragment, T?> {
 
     companion object {
         private const val EXTRA = "EXTRA"
-        var defaultPackageName: String = ""
+        private var defaultPackageName: String = ""
 
         /**
          * Get String with name for EXTRA parameter. Pattern packageName + class.simpleName + EXTRA + extraName
          */
         @JvmOverloads
-        fun <T> getExtra(extraName: String,
-                         clazz: Class<T>? = null,
-                         packageName: String = defaultPackageName): String {
+        fun <T> getExtra(
+            extraName: String,
+            clazz: Class<T>? = null,
+            packageName: String = defaultPackageName
+        ): String {
             return (if (defaultPackageName.isNotBlank()) defaultPackageName else packageName)
                 .let { "${it}_${clazz?.simpleName ?: ""}_${EXTRA}_$extraName" }
         }
@@ -40,8 +42,8 @@ class FragmentArgumentDelegate<T : Any> : ReadWriteProperty<Fragment, T?> {
      */
     @Suppress("UNCHECKED_CAST")
     override operator fun getValue(thisRef: Fragment, property: KProperty<*>): T? = value
-            ?: (thisRef.arguments?.get(getExtra(property.name, thisRef::class.java)) as? T)
-                    .also { value = it }
+        ?: (thisRef.arguments?.get(getExtra(property.name, thisRef::class.java)) as? T)
+            .also { value = it }
 
     /**
      * Sets the value of the property for the given object.
@@ -70,9 +72,15 @@ class FragmentArgumentDelegate<T : Any> : ReadWriteProperty<Fragment, T?> {
                 is Bundle -> args.putBundle(key, it)
                 is Parcelable -> args.putParcelable(key, it)
                 is Array<*> -> when {
-                    it.isArrayOf<CharSequence>() -> args.putCharSequenceArray(key, it as Array<CharSequence>)
+                    it.isArrayOf<CharSequence>() -> args.putCharSequenceArray(
+                        key,
+                        it as Array<CharSequence>
+                    )
                     it.isArrayOf<String>() -> args.putStringArray(key, it as Array<String>)
-                    it.isArrayOf<Parcelable>() -> args.putParcelableArray(key, it as Array<Parcelable>)
+                    it.isArrayOf<Parcelable>() -> args.putParcelableArray(
+                        key,
+                        it as Array<Parcelable>
+                    )
                     else -> propertyNotSupport(it, property)
                 }
                 is IntArray -> args.putIntArray(key, it)
@@ -88,5 +96,5 @@ class FragmentArgumentDelegate<T : Any> : ReadWriteProperty<Fragment, T?> {
     }
 
     private fun propertyNotSupport(it: T, property: KProperty<*>): Nothing =
-            throw IllegalStateException("Type ${it.javaClass.canonicalName} of property ${property.name} is not supported")
+        throw IllegalStateException("Type ${it.javaClass.canonicalName} of property ${property.name} is not supported")
 }

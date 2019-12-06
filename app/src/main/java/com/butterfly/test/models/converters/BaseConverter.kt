@@ -12,11 +12,7 @@ import androidx.annotation.Nullable
 
 abstract class BaseConverter<IN : Any, OUT : Any> : Converter<IN, OUT> {
 
-    override val observable: ObservableConverter<IN, OUT> by lazy { ObservableConverter(this) }
-
     override val single: SingleConverter<IN, OUT> by lazy { SingleConverter(this) }
-
-    override val flowable: FlowableConverter<IN, OUT> by lazy { FlowableConverter(this) }
 
     /**
      * Convert IN to OUT
@@ -42,8 +38,9 @@ abstract class BaseConverter<IN : Any, OUT : Any> : Converter<IN, OUT> {
      * @return [List] of converted objects
      */
     @Nullable
-    override fun listInToOut(@Nullable inObjects: List<IN>?): List<OUT> = inObjects?.mapNotNull { inToOut(it) }
-        ?: listOf()
+    override fun listInToOut(@Nullable inObjects: List<IN>?): List<OUT> =
+        inObjects?.mapNotNull { inToOut(it) }
+            ?: listOf()
 
     /**
      * Convert List of OUT to List of IN
@@ -52,8 +49,9 @@ abstract class BaseConverter<IN : Any, OUT : Any> : Converter<IN, OUT> {
      * @return [List] of converted objects
      */
     @Nullable
-    override fun listOutToIn(@Nullable outObjects: List<OUT>?): List<IN> = outObjects?.mapNotNull { outToIn(it) }
-        ?: listOf()
+    override fun listOutToIn(@Nullable outObjects: List<OUT>?): List<IN> =
+        outObjects?.mapNotNull { outToIn(it) }
+            ?: listOf()
 
     protected abstract fun processConvertInToOut(@Nullable inObject: IN?): OUT?
 

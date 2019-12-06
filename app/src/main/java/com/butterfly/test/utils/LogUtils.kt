@@ -15,27 +15,57 @@ object Logger {
 
     private var url = ""
 
-    fun v(exception: Exception? = null, callStackLevel: Int = 0, tag: String = callerTag(callStackLevel), message: () -> String) = inDebug {
+    fun v(
+        exception: Exception? = null,
+        callStackLevel: Int = 0,
+        tag: String = callerTag(callStackLevel),
+        message: () -> String
+    ) = inDebug {
         Log.v(tag, message() + url, exception)
     }
 
-    fun d(exception: Exception? = null, callStackLevel: Int = 0, tag: String = callerTag(callStackLevel), message: () -> String) = inDebug {
+    fun d(
+        exception: Exception? = null,
+        callStackLevel: Int = 0,
+        tag: String = callerTag(callStackLevel),
+        message: () -> String
+    ) = inDebug {
         Log.d(tag, message() + url, exception)
     }
 
-    fun i(exception: Exception? = null, callStackLevel: Int = 0, tag: String = callerTag(callStackLevel), message: () -> String) = inDebug {
+    fun i(
+        exception: Exception? = null,
+        callStackLevel: Int = 0,
+        tag: String = callerTag(callStackLevel),
+        message: () -> String
+    ) = inDebug {
         Log.i(tag, message() + url, exception)
     }
 
-    fun w(exception: Exception? = null, callStackLevel: Int = 0, tag: String = callerTag(callStackLevel), message: () -> String) = inDebug {
+    fun w(
+        exception: Exception? = null,
+        callStackLevel: Int = 0,
+        tag: String = callerTag(callStackLevel),
+        message: () -> String
+    ) = inDebug {
         Log.w(tag, message() + url, exception)
     }
 
-    fun e(exception: Exception? = null, callStackLevel: Int = 0, tag: String = callerTag(callStackLevel), message: () -> String) = inDebug {
+    fun e(
+        exception: Exception? = null,
+        callStackLevel: Int = 0,
+        tag: String = callerTag(callStackLevel),
+        message: () -> String
+    ) = inDebug {
         Log.e(tag, message() + url, exception)
     }
 
-    fun wtf(exception: Exception? = null, callStackLevel: Int = 0, tag: String = callerTag(callStackLevel), message: () -> String) = inDebug {
+    fun wtf(
+        exception: Exception? = null,
+        callStackLevel: Int = 0,
+        tag: String = callerTag(callStackLevel),
+        message: () -> String
+    ) = inDebug {
         Log.wtf(tag, message() + url, exception)
     }
 
@@ -60,7 +90,8 @@ object Logger {
 
             tag = tag.substring(tag.lastIndexOf('.') + 1)
 
-            url = "(${stackTrace[CALL_STACK_INDEX + callStackLevelLocale].fileName}:${stackTrace[CALL_STACK_INDEX + callStackLevelLocale].lineNumber})"
+            url =
+                "(${stackTrace[CALL_STACK_INDEX + callStackLevelLocale].fileName}:${stackTrace[CALL_STACK_INDEX + callStackLevelLocale].lineNumber})"
             callStackLevelLocale++
         } while (url.contains("AnyExtensions"))
         // Tag length limit was removed in API 24.

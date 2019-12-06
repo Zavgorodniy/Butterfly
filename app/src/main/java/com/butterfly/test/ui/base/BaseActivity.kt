@@ -113,7 +113,10 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(),
      */
     protected open fun popBackStackFragment(clazz: Class<*>) =
         if (supportFragmentManager.findFragmentByTag(clazz.simpleName) != null) {
-            supportFragmentManager.popBackStack(clazz.simpleName, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            supportFragmentManager.popBackStack(
+                clazz.simpleName,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
             true
         } else {
             false
@@ -151,13 +154,15 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(),
         }
     }
 
-    protected open fun showAlert(message: String,
-                                 title: String? = null,
-                                 cancelable: Boolean = true,
-                                 positiveRes: Int = R.string.ok,
-                                 positiveFun: () -> Unit = {},
-                                 negativeRes: Int? = R.string.no,
-                                 negativeFun: () -> Unit = {}) {
+    protected open fun showAlert(
+        message: String,
+        title: String? = null,
+        cancelable: Boolean = true,
+        positiveRes: Int = R.string.ok,
+        positiveFun: () -> Unit = {},
+        negativeRes: Int? = R.string.no,
+        negativeFun: () -> Unit = {}
+    ) {
         AlertDialog.Builder(this).apply {
             setMessage(message)
             setCancelable(cancelable)
@@ -168,13 +173,15 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(),
         }
     }
 
-    protected open fun showAlert(message: Int,
-                                 title: Int? = null,
-                                 cancelable: Boolean = true,
-                                 positiveRes: Int = R.string.ok,
-                                 positiveFun: () -> Unit = {},
-                                 negativeRes: Int? = null,
-                                 negativeFun: () -> Unit = {}) {
+    protected open fun showAlert(
+        message: Int,
+        title: Int? = null,
+        cancelable: Boolean = true,
+        positiveRes: Int = R.string.ok,
+        positiveFun: () -> Unit = {},
+        negativeRes: Int? = null,
+        negativeFun: () -> Unit = {}
+    ) {
         AlertDialog.Builder(this).apply {
             setMessage(message)
             setCancelable(cancelable)
@@ -192,12 +199,18 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        supportFragmentManager.findFragmentById(containerId)?.onActivityResult(requestCode, resultCode, data)
+        supportFragmentManager.findFragmentById(containerId)
+            ?.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        supportFragmentManager.findFragmentById(containerId)?.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        supportFragmentManager.findFragmentById(containerId)
+            ?.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onError(error: Any) {

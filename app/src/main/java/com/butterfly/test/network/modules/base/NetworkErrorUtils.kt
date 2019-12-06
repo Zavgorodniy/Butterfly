@@ -45,30 +45,30 @@ object NetworkErrorUtils {
         Single.error<T>(parseError(it))
     }
 
-    fun <T: Response<*>> rxParseError() = SingleTransformer<T, T> { inObservable ->
+    fun <T : Response<*>> rxParseError() = SingleTransformer<T, T> { inObservable ->
         inObservable.doOnSuccess {
             if (!it.isSuccessful) throw parseErrorResponseBody(it)
         }
     }
 
     private fun parseError(throwable: Throwable): Throwable? =
-            if (throwable is HttpException) {
+        if (throwable is HttpException) {
 // return this exception in case of error with 500 code
-                when (throwable.code()) {
-                    SERVER_ERROR_CODE, SERVER_ERROR_CODE_1 -> ServerException().initCause(throwable)
-                    else -> throwable.response()?.let { parseErrorResponseBody(it) }
-                }
-            } else when {
-                isConnectionProblem(throwable) -> NoNetworkException()
-                isServerConnectionProblem(throwable) -> ServerException()
-                else -> throwable
+            when (throwable.code()) {
+                SERVER_ERROR_CODE, SERVER_ERROR_CODE_1 -> ServerException().initCause(throwable)
+                else -> throwable.response()?.let { parseErrorResponseBody(it) }
             }
+        } else when {
+            isConnectionProblem(throwable) -> NoNetworkException()
+            isServerConnectionProblem(throwable) -> ServerException()
+            else -> throwable
+        }
 
     private fun isServerConnectionProblem(throwable: Throwable): Boolean =
-            throwable is SocketException || throwable is SocketTimeoutException
+        throwable is SocketException || throwable is SocketTimeoutException
 
     private fun isConnectionProblem(throwable: Throwable): Boolean =
-            throwable is UnknownHostException || throwable is ConnectException
+        throwable is UnknownHostException || throwable is ConnectException
 
 
     private fun parseErrorResponseBody(response: Response<*>): Exception {
@@ -109,21 +109,23 @@ object NetworkErrorUtils {
                 validationErrors.add(ValidationError(it, null, message = message))
             }
 
-            return ApiException(responseCode,
-                    v,
-                    message,
-                    validationErrors)
+            return ApiException(
+                responseCode,
+                v,
+                message,
+                validationErrors
+            )
         }
     }
 
     private fun parseBufferedReader(bufferedReader: BufferedReader): StringBuilder =
-            StringBuilder().apply {
-                var newLine: String? = bufferedReader.readLine()
-                while (newLine != null) {
-                    append(newLine)
-                    newLine = bufferedReader.readLine()
-                }
+        StringBuilder().apply {
+            var newLine: String? = bufferedReader.readLine()
+            while (newLine != null) {
+                append(newLine)
+                newLine = bufferedReader.readLine()
             }
+        }
 
     private fun closeStream(inputStreamReader: InputStreamReader?) {
         inputStreamReader?.let {

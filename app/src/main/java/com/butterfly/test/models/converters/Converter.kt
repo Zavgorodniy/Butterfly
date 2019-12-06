@@ -12,9 +12,7 @@ import androidx.annotation.Nullable
 
 interface Converter<IN, OUT> {
 
-    val observable: ObservableConverter<IN, OUT>
     val single: SingleConverter<IN, OUT>
-    val flowable: FlowableConverter<IN, OUT>
 
     /**
      * Convert IN to OUT

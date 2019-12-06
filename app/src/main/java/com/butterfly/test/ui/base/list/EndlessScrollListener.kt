@@ -4,9 +4,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.butterfly.test.extensions.assertInstanceOf
 
-class EndlessScrollListener(private val rvToScroll: RecyclerView,
-                            private val visibleThreshold: Int = DEFAULT_THRESHOLD,
-                            private val direction: ScrollDirection
+class EndlessScrollListener(
+    private val rvToScroll: RecyclerView,
+    private val visibleThreshold: Int = DEFAULT_THRESHOLD,
+    private val direction: ScrollDirection
 ) : RecyclerView.OnScrollListener() {
 
     private var previousTotal: Int = 0
@@ -21,9 +22,10 @@ class EndlessScrollListener(private val rvToScroll: RecyclerView,
         private const val DEFAULT_THRESHOLD = 10
         private const val NO_POSITION = -1
 
-        fun create(recyclerView: RecyclerView,
-                   visibleThreshold: Int,
-                   direction: ScrollDirection
+        fun create(
+            recyclerView: RecyclerView,
+            visibleThreshold: Int,
+            direction: ScrollDirection
         ): EndlessScrollListener {
             recyclerView.layoutManager.assertInstanceOf<LinearLayoutManager>("Layout manager")
             return EndlessScrollListener(
@@ -73,32 +75,36 @@ class EndlessScrollListener(private val rvToScroll: RecyclerView,
         } ?: 0
         val visibleItemCount = rvToScroll.childCount
         if (loading
-                && needToLoadMore
-                && totalItemCount > previousTotal) {
+            && needToLoadMore
+            && totalItemCount > previousTotal
+        ) {
             loading = false
             previousTotal = totalItemCount
         }
         if (checkForScrollDown(totalItemCount, visibleItemCount, firstVisibleItem)
-                || checkForScrollUp(firstVisibleItem)) {
+            || checkForScrollUp(firstVisibleItem)
+        ) {
             loadMore()
         }
     }
 
-    private fun checkForScrollDown(totalItemCount: Int,
-                                   visibleItemCount: Int,
-                                   firstVisibleItem: Int) =
-            direction == ScrollDirection.SCROLL_DIRECTION_DOWN
-                    && !loading
-                    && firstVisibleItem != NO_POSITION
-                    && needToLoadMore
-                    && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)
+    private fun checkForScrollDown(
+        totalItemCount: Int,
+        visibleItemCount: Int,
+        firstVisibleItem: Int
+    ) =
+        direction == ScrollDirection.SCROLL_DIRECTION_DOWN
+                && !loading
+                && firstVisibleItem != NO_POSITION
+                && needToLoadMore
+                && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)
 
     private fun checkForScrollUp(firstVisibleItem: Int) =
-            direction == ScrollDirection.SCROLL_DIRECTION_UP
-                    && !loading
-                    && needToLoadMore
-                    && firstVisibleItem != NO_POSITION
-                    && firstVisibleItem <= visibleThreshold
+        direction == ScrollDirection.SCROLL_DIRECTION_UP
+                && !loading
+                && needToLoadMore
+                && firstVisibleItem != NO_POSITION
+                && firstVisibleItem <= visibleThreshold
 
     private fun loadMore() {
         loadMoreListener?.apply {

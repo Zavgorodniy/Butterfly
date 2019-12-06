@@ -8,16 +8,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.butterfly.test.PAGE_LIMIT
 import com.butterfly.test.R
 import com.butterfly.test.VISIBLE_TRESHOLD
+import com.butterfly.test.extensions.setVisibility
 import com.butterfly.test.ui.base.BaseFragment
 import com.butterfly.test.ui.base.BaseViewModel
-import com.butterfly.test.extensions.setVisibility
-import kotlinx.android.synthetic.main.fragment_list.*
 
 abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
-        BaseFragment<ViewModel>(),
-        SwipeRefreshLayout.OnRefreshListener,
-        EndlessScrollListener.OnLoadMoreListener,
-        PaginationListView {
+    BaseFragment<ViewModel>(),
+    SwipeRefreshLayout.OnRefreshListener,
+    EndlessScrollListener.OnLoadMoreListener,
+    PaginationListView {
 
     protected open val recyclerViewId = R.id.rvRequest
 
@@ -53,7 +52,8 @@ abstract class BaseSortedListFragment<ViewModel : BaseViewModel, M : Any> :
      */
     protected abstract fun loadMoreData()
 
-    protected open fun getLayoutManager() = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+    protected open fun getLayoutManager() =
+        LinearLayoutManager(context, RecyclerView.VERTICAL, false)
 
     protected open fun getScrollDirection() =
         EndlessScrollListener.ScrollDirection.SCROLL_DIRECTION_DOWN

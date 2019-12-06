@@ -15,11 +15,13 @@ open class ApiException : Exception {
 
     constructor() : super()
 
-    constructor(statusCode: Int?,
-                v: String?,
-                message: String?,
-                errors: List<ValidationError>?,
-                stacktrace: String? = null) : super(message) {
+    constructor(
+        statusCode: Int?,
+        v: String?,
+        message: String?,
+        errors: List<ValidationError>?,
+        stacktrace: String? = null
+    ) : super(message) {
         this.statusCode = statusCode
         this.showMessage = message
         this.v = v

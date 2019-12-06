@@ -14,13 +14,17 @@ import kotlin.reflect.KProperty
  * @param pref Instance for accessing and modifying preference data returned by [SharedPreferences]
  *
  */
-abstract class PreferenceDelegate<T>(private val key: String? = null,
-                                     protected val pref: SharedPreferences = App.prefs) : ReadWriteProperty<Any, T?> {
+abstract class PreferenceDelegate<T>(
+    private val key: String? = null,
+    protected val pref: SharedPreferences = App.prefs
+) : ReadWriteProperty<Any, T?> {
     protected fun getKey(property: KProperty<*>) = key ?: "PREF_${property.name}"
 
     @SuppressLint("ApplySharedPref")
-    protected fun <T> SharedPreferences.checkForRemove(property: KProperty<*>, value: T?,
-                                                       block: SharedPreferences.Editor.(key: String, value: T) -> Unit) {
+    protected fun <T> SharedPreferences.checkForRemove(
+        property: KProperty<*>, value: T?,
+        block: SharedPreferences.Editor.(key: String, value: T) -> Unit
+    ) {
         edit().apply {
             val key = getKey(property)
             value?.let { block(key, it) } ?: remove(key)
@@ -33,16 +37,18 @@ abstract class PreferenceDelegate<T>(private val key: String? = null,
  *
  * @param defaultValue default value [String]
  */
-class StringPD(private val defaultValue: String = EMPTY_STRING,
-               pref: SharedPreferences = App.prefs,
-               key: String? = null) : PreferenceDelegate<String>(key, pref) {
+class StringPD(
+    private val defaultValue: String = EMPTY_STRING,
+    pref: SharedPreferences = App.prefs,
+    key: String? = null
+) : PreferenceDelegate<String>(key, pref) {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): String? =
-            getKey(property).takeIf { pref.contains(it) }
-                    ?.let { pref.getString(it, defaultValue) }
+        getKey(property).takeIf { pref.contains(it) }
+            ?.let { pref.getString(it, defaultValue) }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: String?) =
-            pref.checkForRemove(property, value) { key, v -> putString(key, v) }
+        pref.checkForRemove(property, value) { key, v -> putString(key, v) }
 }
 
 /**
@@ -50,16 +56,18 @@ class StringPD(private val defaultValue: String = EMPTY_STRING,
  *
  * @param defaultValue default value [Int]
  */
-class IntPD(private val defaultValue: Int = 0,
-            pref: SharedPreferences = App.prefs,
-            key: String? = null) : PreferenceDelegate<Int>(key, pref) {
+class IntPD(
+    private val defaultValue: Int = 0,
+    pref: SharedPreferences = App.prefs,
+    key: String? = null
+) : PreferenceDelegate<Int>(key, pref) {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): Int? =
-            getKey(property).takeIf { pref.contains(it) }
-                    ?.let { pref.getInt(it, defaultValue) }
+        getKey(property).takeIf { pref.contains(it) }
+            ?.let { pref.getInt(it, defaultValue) }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: Int?) =
-            pref.checkForRemove(property, value) { key, v -> putInt(key, v) }
+        pref.checkForRemove(property, value) { key, v -> putInt(key, v) }
 }
 
 /**
@@ -67,16 +75,18 @@ class IntPD(private val defaultValue: Int = 0,
  *
  * @param defaultValue default value [Long]
  */
-class LongPD(private val defaultValue: Long = 0,
-             pref: SharedPreferences = App.prefs,
-             key: String? = null) : PreferenceDelegate<Long>(key, pref) {
+class LongPD(
+    private val defaultValue: Long = 0,
+    pref: SharedPreferences = App.prefs,
+    key: String? = null
+) : PreferenceDelegate<Long>(key, pref) {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): Long? =
-            getKey(property).takeIf { pref.contains(it) }
-                    ?.let { pref.getLong(it, defaultValue) }
+        getKey(property).takeIf { pref.contains(it) }
+            ?.let { pref.getLong(it, defaultValue) }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: Long?) =
-            pref.checkForRemove(property, value) { key, v -> putLong(key, v) }
+        pref.checkForRemove(property, value) { key, v -> putLong(key, v) }
 }
 
 /**
@@ -84,16 +94,18 @@ class LongPD(private val defaultValue: Long = 0,
  *
  * @param defaultValue default value [Float]
  */
-class FloatPD(private val defaultValue: Float = 0F,
-              pref: SharedPreferences = App.prefs,
-              key: String? = null) : PreferenceDelegate<Float>(key, pref) {
+class FloatPD(
+    private val defaultValue: Float = 0F,
+    pref: SharedPreferences = App.prefs,
+    key: String? = null
+) : PreferenceDelegate<Float>(key, pref) {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): Float? =
-            getKey(property).takeIf { pref.contains(it) }
-                    ?.let { pref.getFloat(it, defaultValue) }
+        getKey(property).takeIf { pref.contains(it) }
+            ?.let { pref.getFloat(it, defaultValue) }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: Float?) =
-            pref.checkForRemove(property, value) { key, v -> putFloat(key, v) }
+        pref.checkForRemove(property, value) { key, v -> putFloat(key, v) }
 }
 
 /**
@@ -101,14 +113,16 @@ class FloatPD(private val defaultValue: Float = 0F,
  *
  * @param defaultValue default value [Boolean]
  */
-class BooleanPD(private val defaultValue: Boolean = false,
-                pref: SharedPreferences = App.prefs,
-                key: String? = null) : PreferenceDelegate<Boolean>(key, pref) {
+class BooleanPD(
+    private val defaultValue: Boolean = false,
+    pref: SharedPreferences = App.prefs,
+    key: String? = null
+) : PreferenceDelegate<Boolean>(key, pref) {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
-            getKey(property).takeIf { pref.contains(it) }
-                    ?.let { pref.getBoolean(it, defaultValue) } ?: defaultValue
+        getKey(property).takeIf { pref.contains(it) }
+            ?.let { pref.getBoolean(it, defaultValue) } ?: defaultValue
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean?) =
-            pref.checkForRemove(property, value) { key, v -> putBoolean(key, v) }
+        pref.checkForRemove(property, value) { key, v -> putBoolean(key, v) }
 }

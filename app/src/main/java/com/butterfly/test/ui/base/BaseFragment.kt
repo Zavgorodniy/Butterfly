@@ -80,7 +80,11 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(),
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(layoutId, container, false)
         hideKeyboard(view)
         return view

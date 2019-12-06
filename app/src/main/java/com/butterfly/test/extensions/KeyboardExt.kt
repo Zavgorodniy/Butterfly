@@ -25,8 +25,10 @@ fun SupportFragment.showKeyboard() = activity?.showKeyboard()
 /**
  * Extension method to provide hide keyboard for Activity
  */
-fun Activity.hideKeyboard(view: View? = null) = (this as Context).hideKeyboard(view
-    ?: currentFocus)
+fun Activity.hideKeyboard(view: View? = null) = (this as Context).hideKeyboard(
+    view
+        ?: currentFocus
+)
 
 /**
  * Extension method to provide hide keyboard for Context

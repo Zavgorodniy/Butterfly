@@ -12,11 +12,11 @@ object NetworkModule {
 
     val mapper: ObjectMapper =
         ObjectMapper()
-                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                // send Date in "yyyy-MM-dd'T'HH:mm:ss.SSSZ" format
-                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                .registerModule(JodaModule())
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            // send Date in "yyyy-MM-dd'T'HH:mm:ss.SSSZ" format
+            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+            .registerModule(JodaModule())
 
     internal val catClient by lazy { ServerClient(BuildConfig.ENDPOINT_CAT) }
 

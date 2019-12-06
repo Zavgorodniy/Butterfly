@@ -1,8 +1,11 @@
 package com.butterfly.test.ui.base
 
 import android.app.Application
-import androidx.lifecycle.*
-import com.butterfly.test.extensions.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import com.butterfly.test.extensions.doAsync
 import com.butterfly.test.network.exceptions.ApiException
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -28,7 +31,7 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         errorLD.value = if (errorString.isNotEmpty()) errorString else it.message
     }
 
-    protected var compositeDisposable: CompositeDisposable? = null
+    private var compositeDisposable: CompositeDisposable? = null
 
     override fun onCleared() {
         clearSubscription()
@@ -56,50 +59,64 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
     protected open fun Disposable.addSubscription() = addBackgroundSubscription(this)
 
     protected fun handleError(block: () -> Unit, statusCode: Int) = Consumer<Throwable> {
-        if (it is ApiException && it.statusCode == statusCode) block() else onErrorConsumer.accept(it)
+        if (it is ApiException && it.statusCode == statusCode) block() else onErrorConsumer.accept(
+            it
+        )
     }
 
     /**
      * Helper methods for working with RxJava
      */
-    protected fun <T> Flowable<T>.doAsync(successful: Consumer<T>,
-                                          error: Consumer<Throwable> = onErrorConsumer,
-                                          isShowProgress: Boolean = true) {
+    protected fun <T> Flowable<T>.doAsync(
+        successful: Consumer<T>,
+        error: Consumer<Throwable> = onErrorConsumer,
+        isShowProgress: Boolean = true
+    ) {
         doAsync(successful, error, isLoadingLD, isShowProgress)
             .addSubscription()
     }
 
-    protected fun <T> Flowable<T>.doAsync(successful: MutableLiveData<T>,
-                                          error: Consumer<Throwable> = onErrorConsumer,
-                                          isShowProgress: Boolean = true) {
+    protected fun <T> Flowable<T>.doAsync(
+        successful: MutableLiveData<T>,
+        error: Consumer<Throwable> = onErrorConsumer,
+        isShowProgress: Boolean = true
+    ) {
         doAsync(successful, error, isLoadingLD, isShowProgress)
             .addSubscription()
     }
 
-    protected fun <T> Single<T>.doAsync(successful: Consumer<T>,
-                                        error: Consumer<Throwable> = onErrorConsumer,
-                                        isShowProgress: Boolean = true) {
+    protected fun <T> Single<T>.doAsync(
+        successful: Consumer<T>,
+        error: Consumer<Throwable> = onErrorConsumer,
+        isShowProgress: Boolean = true
+    ) {
         doAsync(successful, error, isLoadingLD, isShowProgress)
             .addSubscription()
     }
 
-    protected fun <T> Single<T>.doAsync(successful: MutableLiveData<T>,
-                                        error: Consumer<Throwable> = onErrorConsumer,
-                                        isShowProgress: Boolean = true) {
+    protected fun <T> Single<T>.doAsync(
+        successful: MutableLiveData<T>,
+        error: Consumer<Throwable> = onErrorConsumer,
+        isShowProgress: Boolean = true
+    ) {
         doAsync(successful, error, isLoadingLD, isShowProgress)
             .addSubscription()
     }
 
-    protected fun <T> Observable<T>.doAsync(successful: Consumer<T>,
-                                            error: Consumer<Throwable> = onErrorConsumer,
-                                            isShowProgress: Boolean = true) {
+    protected fun <T> Observable<T>.doAsync(
+        successful: Consumer<T>,
+        error: Consumer<Throwable> = onErrorConsumer,
+        isShowProgress: Boolean = true
+    ) {
         doAsync(successful, error, isLoadingLD, isShowProgress)
             .addSubscription()
     }
 
-    protected fun <T> Observable<T>.doAsync(successful: MutableLiveData<T>,
-                                            error: Consumer<Throwable> = onErrorConsumer,
-                                            isShowProgress: Boolean = true) {
+    protected fun <T> Observable<T>.doAsync(
+        successful: MutableLiveData<T>,
+        error: Consumer<Throwable> = onErrorConsumer,
+        isShowProgress: Boolean = true
+    ) {
         doAsync(successful, error, isLoadingLD, isShowProgress)
             .addSubscription()
     }

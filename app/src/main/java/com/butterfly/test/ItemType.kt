@@ -1,6 +1,6 @@
 package com.butterfly.test
 
-enum class ItemType() {
+enum class ItemType {
     BUTTERFLY,
     CAT;
 

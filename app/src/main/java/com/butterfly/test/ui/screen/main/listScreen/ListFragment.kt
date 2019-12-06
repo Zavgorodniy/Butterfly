@@ -33,6 +33,18 @@ class ListFragment : BaseSortedListFragment<ListViewModel, ListItem>(),
         onDataLoaded(it)
     }
 
+    private val errorListObserver = Observer<Any> {
+        hideLoadingProgress()
+    }
+
+    private val connectionObserver = Observer<Boolean> {
+        if (it) {
+            loadInitial()
+        } else {
+            hideProgress()
+        }
+    }
+
     private var adapter: ListAdapter? = null
 
     override fun getAdapter() =
@@ -66,6 +78,8 @@ class ListFragment : BaseSortedListFragment<ListViewModel, ListItem>(),
         with(viewModel) {
             butterflyLD.observe(this@ListFragment, butterflyDataObserver)
             catLD.observe(this@ListFragment, catDataObserver)
+            connectionLiveData.observe(this@ListFragment, connectionObserver)
+            errorLD.observe(this@ListFragment, errorListObserver)
         }
     }
 

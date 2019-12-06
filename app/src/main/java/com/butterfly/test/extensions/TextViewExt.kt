@@ -15,6 +15,6 @@ fun TextView.hideIfEmpty(string: String?, isGone: Boolean = true) =
             show()
             text = it
         } ?: run {
-            text = EMPTY_STRING
-            hide(isGone)
-        }
+        text = EMPTY_STRING
+        hide(isGone)
+    }

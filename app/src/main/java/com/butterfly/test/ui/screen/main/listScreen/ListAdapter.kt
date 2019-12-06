@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.butterfly.test.ItemType.*
+import com.butterfly.test.ItemType.BUTTERFLY
 import com.butterfly.test.R
 import com.butterfly.test.extensions.appString
 import com.butterfly.test.extensions.find
@@ -23,7 +23,10 @@ interface ListAdapterCallback {
 }
 
 class ListAdapter(context: Context, callback: ListAdapterCallback) :
-    BaseSortedRecyclerViewAdapter<ListItem, BaseViewHolder<ListItem>>(context, classType = ListItem::class.java) {
+    BaseSortedRecyclerViewAdapter<ListItem, BaseViewHolder<ListItem>>(
+        context,
+        classType = ListItem::class.java
+    ) {
 
     private val weakRefCallback = WeakReference(callback)
 
@@ -51,10 +54,11 @@ class ListAdapter(context: Context, callback: ListAdapterCallback) :
             internal fun newInstance(
                 inflater: LayoutInflater,
                 parent: ViewGroup?,
-                weakRefCallback: WeakReference<ListAdapterCallback>) = ButterflyVH(
-                    inflater.inflate(R.layout.item_butterfly, parent, false),
-                    weakRefCallback
-                )
+                weakRefCallback: WeakReference<ListAdapterCallback>
+            ) = ButterflyVH(
+                inflater.inflate(R.layout.item_butterfly, parent, false),
+                weakRefCallback
+            )
         }
 
         override fun bind(item: ListItem, position: Int) {
@@ -84,7 +88,8 @@ class ListAdapter(context: Context, callback: ListAdapterCallback) :
             internal fun newInstance(
                 inflater: LayoutInflater,
                 parent: ViewGroup?,
-                weakRefCallback: WeakReference<ListAdapterCallback>) =
+                weakRefCallback: WeakReference<ListAdapterCallback>
+            ) =
                 CatVH(inflater.inflate(R.layout.item_cat, parent, false), weakRefCallback)
         }
 
